@@ -1,0 +1,61 @@
+{% extends "base.html" %} {% block title %}Sign up<{% endblock %} {% block
+content %}
+<br />
+<div style="padding-top: 18vh" class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <form method="POST">
+        <h3 align="center">Sign up</h3>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="Enter first name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password1"
+            name="password1"
+            placeholder="Enter password"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password2">Confirm password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password2"
+            name="password2"
+            placeholder="Confirm password"
+          />
+        </div>
+        <br />
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Sign up</button>
+        </div>
+        <span id="passwordHelpInline" class="form-text d-block text-center">
+          Already have an account? <a href="/login">Log in.</a>
+        </span>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

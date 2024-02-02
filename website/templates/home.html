@@ -1,0 +1,96 @@
+{% extends "base.html" %} {% block title %}Home {% endblock title %} {% block
+content %}
+<h1 style="padding: 1rem">Expenses</h1>
+<div
+  class="d-grid gap-2 d-md-flex justify-content-md-end"
+  style="padding: 1rem"
+>
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#addExpense"
+  >
+    Add expense
+  </button>
+</div>
+<table id="expensesTable" class="table table-striped" style="width: 100%">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Category</th>
+      <th>Payment Method</th>
+      <th>Vendor</th>
+      <th>Description</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for expense in expenses %}
+    <tr>
+      <td>{{ expense.date }}</td>
+      <td>{{ expense.amount }}$</td>
+      <td>{{ expense.category }}</td>
+      <td>{{ expense.payment_method }}</td>
+      <td>{{ expense.vendor }}</td>
+      <td>{{ expense.description }}</td>
+      <td>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#editExpense"
+            onclick="populateEditModal({{ expense.id }}, {{ expense }})"
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            aria-label="Close"
+            onClick="deleteExpense({{ expense.id }})"
+          >
+            Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Category</th>
+      <th>Payment method</th>
+      <th>Vendor</th>
+      <th>Description</th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>
+<br />
+
+{% set modal_mode='add' %}
+<!-- Add Expense Modal -->
+{% include 'includes/_expense_modal.html' %} {%set modal_mode='edit' %}
+<!-- Edit Modal -->
+{% include 'includes/_expense_modal.html' %}
+
+<script>
+  function populateEditModal(expenseId, expense) {
+    document.getElementById("edit-expense-id").value = expenseId;
+
+    document.getElementById("edit-date").value = expense.date;
+    document.getElementById("edit-amount").value = expense.amount;
+    document.getElementById("edit-category").value = expense.category;
+    document.getElementById("edit-method").value = expense.payment_method;
+    document.getElementById("edit-vendor").value = expense.vendor;
+    document.getElementById("edit-description").value = expense.description;
+
+    $("#editExpense").modal("show");
+  }
+</script>
+{% endblock content %}

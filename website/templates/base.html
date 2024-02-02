@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/5.3/examples/sidebars/"
+    />
+
+    <!-- DataTables CSS -->
+    <link
+      href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Sidebar CSS -->
+    <link
+      href="{{ url_for('static', filename='css/sidebars.css') }}"
+      rel="stylesheet"
+    />
+
+    <title>{% block title %}Home{% endblock title %}</title>
+  </head>
+
+  <body>
+    <main class="d-flex">
+      <div
+        class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
+        style="width: 4.5rem"
+      >
+        {% if user.is_authenticated %}
+        <a
+          href="/"
+          class="d-block p-3 link-body-emphasis text-decoration-none"
+          aria-current="page"
+          title="Know your bills"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+        >
+        {% else %}
+        <a
+          href="/login"
+          class="d-block p-3 link-body-emphasis text-decoration-none"
+          aria-current="page"
+          title="Log in"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+        >
+        {% endif %}
+          <svg class="bi pe-none" width="40" height="32">
+            <use
+              xlink:href="{{ url_for('static', filename='svg/icons.svg') }}#piggy-bank"
+            />
+          </svg>
+        </a>
+        <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+          <li class="nav-item">
+            <a
+              href="/"
+              class="nav-link active py-3 border-bottom rounded-0"
+              aria-current="page"
+              title="Home"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+            >
+              <svg
+                class="bi pe-none"
+                width="24"
+                height="24"
+                role="img"
+                aria-label="Home"
+              >
+                <use
+                  xlink:href="{{ url_for('static', filename='svg/icons.svg') }}#home"
+                />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link py-3 border-bottom rounded-0"
+              title="Dashboard"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+            >
+              <svg
+                class="bi pe-none"
+                width="24"
+                height="24"
+                role="img"
+                aria-label="Dashboard"
+              >
+                <use
+                  xlink:href="{{ url_for('static', filename='svg/icons.svg') }}#speedometer2"
+                />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              class="nav-link py-3 border-bottom rounded-0"
+              title="Customize"
+              data-bs-toggle="tooltip"
+              data-bs-placement="right"
+            >
+              <svg
+                class="bi pe-none"
+                width="24"
+                height="24"
+                role="img"
+                aria-label="Customize"
+              >
+                <use
+                  xlink:href="{{ url_for('static', filename='svg/icons.svg') }}#edit"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+        {% if user.is_authenticated %}
+        <div class="dropdown border-top">
+          <a
+            href="#"
+            class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="https://github.com/mdo.png"
+              alt="mdo"
+              width="24"
+              height="24"
+              class="rounded-circle me-2"
+            />
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+      <div class="flex-grow-1 overflow-auto" style="padding: 1.5rem">
+        <div class="container-fluid">
+          {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %} {% for category, message in messages %} {% if category ==
+          'error' %}
+          <div
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% else %}
+          <div
+            class="alert alert-success alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+          {% endif %} {% endfor %} {% endif %} {% endwith %} {% block content %}
+          {% endblock content %}
+        </div>
+      </div>
+
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+      <!-- DataTables JS -->
+      <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+      
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"
+      ></script>
+
+      <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/tooltip.js') }}"></script>
+    </main>
+  </body>
+</html>
