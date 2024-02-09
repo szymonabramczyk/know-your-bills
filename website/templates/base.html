@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='favicon.png') }}"
+    />
 
     <!-- Bootstrap CSS -->
     <link
@@ -30,6 +34,11 @@
       href="{{ url_for('static', filename='css/sidebars.css') }}"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+    />
+    <script src="{{ url_for('static', filename='js/color-modes.js') }}"></script>
 
     <title>{% block title %}Home{% endblock title %}</title>
   </head>
@@ -40,25 +49,14 @@
         class="d-flex flex-column flex-shrink-0 bg-body-tertiary"
         style="width: 4.5rem"
       >
-        {% if user.is_authenticated %}
         <a
-          href="/"
-          class="d-block p-3 link-body-emphasis text-decoration-none"
+          href="{% if user.is_authenticated %}/{% else %}/login{% endif %}"
+          class="d-block p-3 link-body-emphasis text-decoration-none border-bottom"
           aria-current="page"
-          title="Know your bills"
+          title="{% if user.is_authenticated %}Know your bills{% else %}Log in{% endif %}"
           data-bs-toggle="tooltip"
           data-bs-placement="right"
         >
-        {% else %}
-        <a
-          href="/login"
-          class="d-block p-3 link-body-emphasis text-decoration-none"
-          aria-current="page"
-          title="Log in"
-          data-bs-toggle="tooltip"
-          data-bs-placement="right"
-        >
-        {% endif %}
           <svg class="bi pe-none" width="40" height="32">
             <use
               xlink:href="{{ url_for('static', filename='svg/icons.svg') }}#piggy-bank"
@@ -69,7 +67,7 @@
           <li class="nav-item">
             <a
               href="/"
-              class="nav-link active py-3 border-bottom rounded-0"
+              class="nav-link {% block home_active %}active{% endblock home_active %} py-3 border-bottom rounded-0 link-body-emphasis"
               aria-current="page"
               title="Home"
               data-bs-toggle="tooltip"
@@ -90,8 +88,8 @@
           </li>
           <li>
             <a
-              href="#"
-              class="nav-link py-3 border-bottom rounded-0"
+              href="/dashboard"
+              class="nav-link {% block dash_active %}{% endblock dash_active %} py-3 border-bottom rounded-0 link-body-emphasis"
               title="Dashboard"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -112,7 +110,7 @@
           <li>
             <a
               href="#"
-              class="nav-link py-3 border-bottom rounded-0"
+              class="nav-link py-3 border-bottom rounded-0 link-body-emphasis"
               title="Customize"
               data-bs-toggle="tooltip"
               data-bs-placement="right"
@@ -197,7 +195,7 @@
       <!-- DataTables JS -->
       <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-      
+
       <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
