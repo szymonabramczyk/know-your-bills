@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
+from sqlalchemy import func
 
 from . import db
 from .models import Expense
@@ -36,6 +37,9 @@ def add_expense():
             payment_method = request.form.get('add-method')
             vendor = request.form.get('add-vendor')
             description = request.form.get('add-description')
+
+            if not category:
+                category = 'None'
             if date_str:
                 date = datetime.strptime(date_str, '%Y-%m-%d')
                 new_expense = Expense(date=date, amount=amount, category=category, payment_method=payment_method,
@@ -64,6 +68,9 @@ def add_expense():
                 description = request.form.get('edit-description')
                 date = datetime.strptime(date_str, '%Y-%m-%d')
 
+                if not category:
+                    category = 'None'
+
                 expense.amount = amount
                 expense.category = category
                 expense.date = date
@@ -90,3 +97,17 @@ def delete_method():
         return jsonify({'result': 'success'})
     else:
         return jsonify({'result': 'error', 'message': 'Expense record not found'}), 404
+
+
+@views.route('/dashboard')
+@login_required
+def dashboard():
+    category_sums = db.session.query(
+        Expense.category,
+        func.sum(Expense.amount).label('total')
+    ).filter(Expense.user_id == current_user.id).group_by(Expense.category).order_by(Expense.category).all()
+
+    expenses = [i for _, i in category_sums]
+    categories = [i for i, _ in category_sums]
+
+    return render_template("dashboard.html", user=current_user, expenses=json.dumps(expenses), categories=json.dumps(categories))
